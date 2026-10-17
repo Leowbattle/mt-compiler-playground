@@ -13,6 +13,7 @@
         <select id="examples" aria-label="Load example"></select>
         <button id="run" class="primary">Run</button>
         <button id="stop">Stop</button>
+        <button id="about">About</button>
         <span id="status" class="status idle">idle</span>
       </header>
       <main>
@@ -32,6 +33,46 @@
         </section>
       </main>
     </div>
+
+    <dialog id="about-dialog" aria-labelledby="about-title">
+      <div class="about-body">
+        <h2 id="about-title">About MT</h2>
+        <p>
+          MT is a small procedural language with typed variables, functions,
+          conditionals, loops, and interactive integer I/O. Programs are
+          compiled to TAM (Triangle Abstract Machine) instructions and run on a
+          stack-based virtual machine.
+        </p>
+        <p>
+          This playground uses the original Haskell compiler from the cw2
+          university coursework, running on a Cloud Run backend.
+        </p>
+        <p class="about-links">
+          <a
+            href="https://github.com/Leowbattle/mt-compiler-playground/blob/main/docs/language.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Language guide</a
+          >
+          <a
+            href="https://github.com/Leowbattle/compilers-labs/tree/cw2"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Compiler source (cw2 branch)</a
+          >
+          <a
+            href="https://github.com/Leowbattle/mt-compiler-playground"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Playground source</a
+          >
+        </p>
+        <form method="dialog">
+          <button class="primary">Close</button>
+        </form>
+      </div>
+    </dialog>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

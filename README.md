@@ -1,11 +1,13 @@
 # MT Compiler Playground
 
 A three-pane web IDE for the "MT" language from
-[compilers-labs](https://github.com/Leowbattle/compilers-labs):
+[compilers-labs](https://github.com/Leowbattle/compilers-labs/tree/cw2) (the `cw2` branch):
 
 - **Source** — Monaco editor with MT syntax highlighting and an examples dropdown
 - **TAM** — the generated TAM instructions
 - **Console** — xterm.js terminal for interactive program I/O
+
+See the [MT language guide](docs/language.md) for syntax and examples.
 
 The frontend runs against a **mock transport** by default so the UI works without a
 backend. Set `VITE_WS_URL` to connect to the real backend (see below).
