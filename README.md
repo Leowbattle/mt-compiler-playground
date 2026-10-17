@@ -1,7 +1,7 @@
 # MT Compiler Playground
 
 A three-pane web IDE for the "MT" language from
-[compilers-labs](https://github.com/Leowbattle/compilers-labs):
+[compilers-labs](https://github.com/Leowbattle/compilers-labs/tree/cw2) (the `cw2` branch):
 
 - **Source** — Monaco editor with MT syntax highlighting and an examples dropdown
 - **TAM** — the generated TAM instructions
