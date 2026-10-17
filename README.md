@@ -10,6 +10,22 @@ A three-pane web IDE for the "MT" language from
 The frontend runs against a **mock transport** by default so the UI works without a
 backend. Set `VITE_WS_URL` to connect to the real backend (see below).
 
+## Live deployment
+
+- **Frontend:** https://www.leowbattle.com/mt-compiler-playground/
+- **Backend:** https://mt-compiler-playground-hgblofd7eq-uc.a.run.app
+- **WebSocket:** `wss://mt-compiler-playground-hgblofd7eq-uc.a.run.app/ws`
+
+Deploys are automatic on push to `main`:
+
+- `.github/workflows/frontend.yml` builds the Vite app and deploys to GitHub Pages.
+- `.github/workflows/backend.yml` builds the Docker image, pushes it to Artifact
+  Registry, and deploys to Cloud Run.
+
+The planned API domain is `wss://api.mt-compiler-playground.leowbattle.com/ws`.
+It still needs Google Search Console domain verification before a Cloud Run domain
+mapping can be created; until then the `run.app` URL above is used.
+
 ## Development
 
 ```bash
@@ -30,7 +46,7 @@ For a GitHub Pages project site, build with:
 
 ```bash
 VITE_BASE=/mt-compiler-playground/ npm run build
-VITE_WS_URL=wss://api.mt-compiler-playground.leowbattle.com/ws npm run build
+VITE_WS_URL=wss://mt-compiler-playground-hgblofd7eq-uc.a.run.app/ws npm run build
 ```
 
 ## Backend
@@ -47,7 +63,7 @@ COMPILER_BIN="$PWD/compiler" npm start
 ```
 
 `rlwrap` must be on `PATH` (e.g. `apt install rlwrap`). The server listens on
-`http://localhost:8080` (`/healthz`, WebSocket at `/ws`).
+`http://localhost:8080` (`/health`, WebSocket at `/ws`).
 
 Then run the frontend against it:
 

@@ -26,7 +26,7 @@ session.
 | Frontend | **vanilla TypeScript + Vite**, no framework |
 | Editor | **Monaco** (npm dependency) |
 | Terminal | **`@xterm/xterm`** + `@xterm/addon-fit` |
-| Hosting | frontend on **GitHub Pages** (`leowbattle.github.io/mt-compiler-playground/`); backend on **Cloud Run** |
+| Hosting | frontend on **GitHub Pages** (`https://www.leowbattle.com/mt-compiler-playground/`); backend on **Cloud Run** |
 | Transport | **WSS** — `wss://api.mt-compiler-playground.leowbattle.com/ws` |
 | CI | GitHub Actions: separate frontend and backend workflows |
 | Non-goals | No stepping/debugger, no auth, no persistence, no multi-branch selector |
@@ -244,9 +244,9 @@ session over **WSS**.
 ### 5.1 `server.js`
 
 - Express app + Node `http.Server` + `ws` `Server` at `/ws`.
-- `GET /healthz` → `200 ok` (Cloud Run health check).
+- `GET /health` → `200 ok` (Cloud Run health check).
 - `Origin` allowlist check on WebSocket upgrade
-  (`https://leowbattle.github.io`, plus `http://localhost:*` in dev).
+  (`https://www.leowbattle.com`, plus `http://localhost:*` in dev).
 - Per-connection → construct a `Session` (§5.2).
 - Global caps: reject if active sessions exceed `MAX_SESSIONS` (e.g. 20).
 
@@ -548,8 +548,10 @@ returns the right sequence → cw2 type errors are displayed and no run occurs.
 3. **Backend deploy target** — assumed **Cloud Run** (Pages is static-only).
 4. **Compiler ref pinning** — the Dockerfile clones upstream and checks out `cw2`; pin
    `COMPILER_REF` to the `cw2` commit SHA (`494174c…`) for reproducible builds.
-5. **Backend URL** — `wss://api.mt-compiler-playground.leowbattle.com/ws`, set as
-   `VITE_WS_URL` for the Pages build and allowed as an `Origin`
-   (`https://leowbattle.github.io`) on the server.
+5. **Backend URL** — currently
+   `wss://mt-compiler-playground-hgblofd7eq-uc.a.run.app/ws`; the planned custom domain
+   is `wss://api.mt-compiler-playground.leowbattle.com/ws` (pending domain
+   verification). Set as `VITE_WS_URL` for the Pages build and allow
+   `https://www.leowbattle.com` as an `Origin`.
 6. **Cost** — free tier is ample; the only runaway risk is idle-open sockets, mitigated
    by the idle timeout + `--max-instances`.
