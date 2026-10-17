@@ -14,6 +14,7 @@ const RLWRAP_BIN = process.env.RLWRAP_BIN || 'rlwrap';
 
 const IDLE_MS = Number(process.env.SESSION_IDLE_MS || 10 * 60 * 1000);
 const RUN_MS = Number(process.env.SESSION_RUN_MS || 60 * 1000);
+const COMPILE_MS = Number(process.env.SESSION_COMPILE_MS || 10 * 1000);
 const MAX_OUTPUT = Number(process.env.SESSION_MAX_OUTPUT || 1024 * 1024);
 const MAX_SOURCE = Number(process.env.SESSION_MAX_SOURCE || 100_000);
 const MAX_INPUT = Number(process.env.SESSION_MAX_INPUT || 4096);
@@ -127,6 +128,29 @@ export class Session {
 
       let stdout = '';
       let stderr = '';
+      let settled = false;
+
+      const finish = (result) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        if (this.compileProc === proc) this.compileProc = null;
+        resolve(result);
+      };
+
+      const timer = setTimeout(() => {
+        try {
+          proc.kill('SIGKILL');
+        } catch {
+          // Already gone.
+        }
+        finish({
+          code: -1,
+          stdout,
+          stderr: `${stderr}Compilation timed out after ${COMPILE_MS} ms.`,
+        });
+      }, COMPILE_MS);
+
       proc.stdout.on('data', (chunk) => {
         stdout += chunk;
       });
@@ -134,11 +158,10 @@ export class Session {
         stderr += chunk;
       });
       proc.on('error', (error) => {
-        resolve({ code: -1, stdout, stderr: stderr + String(error) });
+        finish({ code: -1, stdout, stderr: stderr + String(error) });
       });
       proc.on('close', (code) => {
-        this.compileProc = null;
-        resolve({ code: code ?? -1, stdout, stderr });
+        finish({ code: code ?? -1, stdout, stderr });
       });
     });
   }
@@ -217,7 +240,7 @@ export class Session {
 
     if (this.ptyProc) {
       try {
-        this.ptyProc.kill();
+        this.ptyProc.kill('SIGKILL');
       } catch {
         // Already gone.
       }
@@ -226,7 +249,7 @@ export class Session {
 
     if (this.compileProc) {
       try {
-        this.compileProc.kill();
+        this.compileProc.kill('SIGKILL');
       } catch {
         // Already gone.
       }
