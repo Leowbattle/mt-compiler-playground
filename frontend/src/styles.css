@@ -137,21 +137,6 @@ main {
   user-select: none;
 }
 
-.badge {
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: #3a3a3a;
-  color: var(--muted);
-  text-transform: none;
-  letter-spacing: 0;
-}
-
-.badge.live {
-  background: #1f4d2b;
-  color: var(--ok);
-}
-
 .pane-body {
   flex: 1;
   min-height: 0;

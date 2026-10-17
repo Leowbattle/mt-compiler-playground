@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // Used once the backend exists; mock mode does not need it.
+      // Local dev: forward /ws to the backend.
       '/ws': { target: 'ws://localhost:8080', ws: true },
     },
   },
