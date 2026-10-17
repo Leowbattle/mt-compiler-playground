@@ -8,7 +8,15 @@ const MAX_SESSIONS = Number(process.env.MAX_SESSIONS || 20);
 
 const ALLOWED_ORIGINS = (
   process.env.ALLOWED_ORIGINS ||
-  'http://localhost:5173,http://127.0.0.1:5173,https://leowbattle.github.io'
+  [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://leowbattle.github.io',
+    'https://www.leowbattle.com',
+    'http://www.leowbattle.com',
+    'https://leowbattle.com',
+    'http://leowbattle.com',
+  ].join(',')
 )
   .split(',')
   .map((origin) => origin.trim())

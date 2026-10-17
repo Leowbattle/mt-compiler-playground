@@ -15,7 +15,8 @@ WORKDIR /src
 RUN git clone "$COMPILER_REPO" . \
  && git checkout "$COMPILER_REF"
 
-RUN ghc -O2 -o /out/compiler Main.hs \
+RUN mkdir -p /out \
+ && ghc -O2 -o /out/compiler Main.hs \
  && ldd /out/compiler
 
 # ---------- Stage 2: runtime ----------
