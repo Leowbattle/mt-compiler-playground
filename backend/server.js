@@ -23,7 +23,7 @@ const ALLOWED_ORIGINS = (
   .filter(Boolean);
 
 const app = express();
-app.get('/healthz', (_req, res) => {
+app.get('/health', (_req, res) => {
   res.type('text/plain').send('ok');
 });
 
