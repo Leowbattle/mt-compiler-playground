@@ -106,8 +106,7 @@ button:disabled {
 }
 
 main {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
   min-height: 0;
 }
 
@@ -116,11 +115,18 @@ main {
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  border-right: 1px solid var(--border);
 }
 
-.pane:last-child {
-  border-right: none;
+.gutter {
+  background: #3c3c3c;
+}
+
+.gutter:hover {
+  background: #555;
+}
+
+.gutter.gutter-horizontal {
+  cursor: col-resize;
 }
 
 .pane-title {
@@ -164,11 +170,17 @@ main {
 
 @media (max-width: 900px) {
   main {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    flex-direction: column;
   }
   .pane {
-    border-right: none;
+    flex: 1 1 0;
+    min-height: 0;
     border-bottom: 1px solid var(--border);
+  }
+  .pane:last-child {
+    border-bottom: none;
+  }
+  .gutter {
+    display: none;
   }
 }

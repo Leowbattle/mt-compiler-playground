@@ -1,4 +1,5 @@
 import './styles.css';
+import Split from 'split.js';
 import { examples } from './examples';
 import {
   createTransport,
@@ -38,6 +39,30 @@ async function init(): Promise<void> {
   const terminal = mountTerminal(el('#console'), (data) => {
     transport?.sendInput(data);
   });
+
+  // The panes sit side by side and can be resized on wide screens. On narrow
+  // screens they stack vertically, so the splitter is torn down (which also
+  // clears the inline sizes Split.js applied).
+  const wideScreen = window.matchMedia('(min-width: 901px)');
+  let split: Split.Instance | null = null;
+
+  const updateSplit = (): void => {
+    if (wideScreen.matches) {
+      if (split) return;
+      split = Split(['#editorPane', '#tamPane', '#consolePane'], {
+        sizes: [33, 33, 34],
+        minSize: [200, 200, 200],
+        gutterSize: 6,
+        cursor: 'col-resize',
+      });
+    } else if (split) {
+      split.destroy();
+      split = null;
+    }
+  };
+
+  updateSplit();
+  wideScreen.addEventListener('change', updateSplit);
 
   const handleFrame = (frame: ServerFrame): void => {
     switch (frame.type) {
