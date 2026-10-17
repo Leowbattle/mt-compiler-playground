@@ -13,8 +13,8 @@ backend. Set `VITE_WS_URL` to connect to the real backend (see below).
 ## Live deployment
 
 - **Frontend:** https://www.leowbattle.com/mt-compiler-playground/
-- **Backend:** https://mt-compiler-playground-hgblofd7eq-uc.a.run.app
-- **WebSocket:** `wss://mt-compiler-playground-hgblofd7eq-uc.a.run.app/ws`
+- **Backend:** https://api.mt-compiler-playground.leowbattle.com
+- **WebSocket:** `wss://api.mt-compiler-playground.leowbattle.com/ws`
 
 Deploys are automatic on push to `main`:
 
@@ -22,9 +22,9 @@ Deploys are automatic on push to `main`:
 - `.github/workflows/backend.yml` builds the Docker image, pushes it to Artifact
   Registry, and deploys to Cloud Run.
 
-The planned API domain is `wss://api.mt-compiler-playground.leowbattle.com/ws`.
-It still needs Google Search Console domain verification before a Cloud Run domain
-mapping can be created; until then the `run.app` URL above is used.
+The API is served from the custom domain
+`wss://api.mt-compiler-playground.leowbattle.com/ws` via a Cloud Run domain mapping with
+a Google-managed certificate.
 
 ## Development
 
@@ -46,7 +46,7 @@ For a GitHub Pages project site, build with:
 
 ```bash
 VITE_BASE=/mt-compiler-playground/ npm run build
-VITE_WS_URL=wss://mt-compiler-playground-hgblofd7eq-uc.a.run.app/ws npm run build
+VITE_WS_URL=wss://api.mt-compiler-playground.leowbattle.com/ws npm run build
 ```
 
 ## Backend
