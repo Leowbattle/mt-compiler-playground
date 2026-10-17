@@ -1,5 +1,6 @@
 import './styles.css';
 import Split from 'split.js';
+import { mountAbout } from './about';
 import { examples } from './examples';
 import {
   createTransport,
@@ -15,6 +16,8 @@ function el<T extends HTMLElement>(selector: string): T {
 }
 
 async function init(): Promise<void> {
+  mountAbout();
+
   // Lazy-load the heavy editor/terminal bundles so the shell paints first.
   const [{ mountEditor }, { mountTerminal }] = await Promise.all([
     import('./editor'),
