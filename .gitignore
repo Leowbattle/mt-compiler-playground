@@ -4,3 +4,8 @@ dist/
 .env.local
 *.log
 .DS_Store
+
+# backend build artifacts
+backend/.compiler-src/
+backend/.compiler-build/
+backend/compiler

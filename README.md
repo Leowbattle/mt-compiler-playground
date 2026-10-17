@@ -7,8 +7,8 @@ A three-pane web IDE for the "MT" language from
 - **TAM** — the generated TAM instructions
 - **Console** — xterm.js terminal for interactive program I/O
 
-The frontend currently runs against a **mock transport** so the UI works without a
-backend. Once the backend exists, set `VITE_WS_URL` to the WebSocket endpoint.
+The frontend runs against a **mock transport** by default so the UI works without a
+backend. Set `VITE_WS_URL` to connect to the real backend (see below).
 
 ## Development
 
@@ -33,4 +33,27 @@ VITE_BASE=/mt-compiler-playground/ npm run build
 VITE_WS_URL=wss://api.mt-compiler-playground.leowbattle.com/ws npm run build
 ```
 
-See [PLAN.md](PLAN.md) for the full design (backend, deployment, CI).
+## Backend
+
+The backend compiles and runs programs with the cw2 Haskell compiler. The interpreter
+is wrapped in **`rlwrap`**, which provides readline-style line editing and history
+(arrow keys) inside the xterm pane.
+
+```bash
+cd backend
+npm install
+bash build-compiler.sh        # clones cw2 from GitHub and builds ./compiler (needs ghc + git)
+COMPILER_BIN="$PWD/compiler" npm start
+```
+
+`rlwrap` must be on `PATH` (e.g. `apt install rlwrap`). The server listens on
+`http://localhost:8080` (`/healthz`, WebSocket at `/ws`).
+
+Then run the frontend against it:
+
+```bash
+cd frontend
+VITE_WS_URL=ws://localhost:8080/ws npm run dev
+```
+
+See [PLAN.md](PLAN.md) for the full design (deployment, CI, protocol).

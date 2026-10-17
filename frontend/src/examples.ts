@@ -77,8 +77,8 @@ end
   {
     name: 'add',
     needsInput: true,
-    source: `let var x;
-    var y
+    source: `let var x: Integer;
+    var y: Integer
 in
 begin
     getint(x);
@@ -90,8 +90,8 @@ end
   {
     name: 'max',
     needsInput: true,
-    source: `let var x;
-    var y
+    source: `let var x: Integer;
+    var y: Integer
 in
 begin
     getint(x);

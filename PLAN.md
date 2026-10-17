@@ -269,7 +269,9 @@ Flow:
    - If the `.tam` text is empty (cw2 emits no code when type checking fails) →
      send `{type:"error", message:"Type errors"}` and **do not** start the interpreter.
 2. `startInterpreter()`:
-   - `pty.spawn(COMPILER, ['prog.tam'], { name: 'xterm-color', cols: 80, rows: 24, cwd: tmpDir, env: process.env })`.
+   - Wrap the interpreter in **`rlwrap`** for readline (history, arrow keys):
+     `pty.spawn(RLWRAP_BIN, ['-n', '-H', historyPath, COMPILER, tamPath], {...})`.
+   - Use `-n` (no warnings), **not `-q`** — in rlwrap `-q` means `--quote-characters`.
    - **Cooked mode is the default** — do not pass `raw`/`echo:false`.
    - `pty.onData(d)` → `{type:"stdout", text:d}` (cap total bytes).
    - `pty.onExit(({exitCode}))` → `{type:"exit", code:exitCode}`.
@@ -375,11 +377,11 @@ RUN ldd /out/compiler   # inspect runtime deps; install matching libs in stage 2
 
 **Stage 2 — runtime** (`node:20-bookworm-slim`):
 ```
-apt-get install -y --no-install-recommends libgmp10   # + libnuma1/libffi8/libtinfo6 only if ldd requires
+apt-get install -y --no-install-recommends rlwrap libgmp10 python3 make g++   # rlwrap = readline; build deps for node-pty
 COPY --from=0 /out/compiler /usr/local/bin/compiler
 COPY backend/ /app/
 WORKDIR /app
-RUN npm ci --omit=dev        # node-pty builds here (needs python3/make/g++ in this stage, or a builder stage)
+RUN npm ci --omit=dev        # node-pty builds here (package.json allowScripts approves it)
 COPY ... (server files)
 ENV PORT=8080
 USER node
