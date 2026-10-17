@@ -28,7 +28,7 @@ app.get('/health', (_req, res) => {
 });
 
 const server = http.createServer(app);
-const wss = new WebSocketServer({ noServer: true });
+const wss = new WebSocketServer({ noServer: true, maxPayload: 256 * 1024 });
 const sessions = new Set();
 
 function originAllowed(origin) {

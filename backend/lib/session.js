@@ -15,6 +15,8 @@ const RLWRAP_BIN = process.env.RLWRAP_BIN || 'rlwrap';
 const IDLE_MS = Number(process.env.SESSION_IDLE_MS || 10 * 60 * 1000);
 const RUN_MS = Number(process.env.SESSION_RUN_MS || 60 * 1000);
 const MAX_OUTPUT = Number(process.env.SESSION_MAX_OUTPUT || 1024 * 1024);
+const MAX_SOURCE = Number(process.env.SESSION_MAX_SOURCE || 100_000);
+const MAX_INPUT = Number(process.env.SESSION_MAX_INPUT || 4096);
 
 export class Session {
   constructor(ws) {
@@ -60,6 +62,10 @@ export class Session {
   }
 
   async run(source) {
+    if (source.length > MAX_SOURCE) {
+      this.send({ type: 'error', message: `Source too large (max ${MAX_SOURCE} characters).` });
+      return;
+    }
     this.stop();
     const generation = this.generation;
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'mt-'));
@@ -186,6 +192,10 @@ export class Session {
   }
 
   input(data) {
+    if (data.length > MAX_INPUT) {
+      this.send({ type: 'error', message: `Input too large (max ${MAX_INPUT} characters).` });
+      return;
+    }
     if (this.ptyProc) {
       this.ptyProc.write(data);
     }
