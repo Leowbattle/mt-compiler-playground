@@ -37,7 +37,7 @@ jobs:
         working-directory: frontend
         env:
           VITE_BASE: /mt-compiler-playground/
-          VITE_WS_URL: ${{ vars.VITE_WS_URL || 'wss://mt-compiler-playground-hgblofd7eq-uc.a.run.app/ws' }}
+          VITE_WS_URL: ${{ vars.VITE_WS_URL || 'wss://api.mt-compiler-playground.leowbattle.com/ws' }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
