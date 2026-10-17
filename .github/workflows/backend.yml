@@ -18,6 +18,7 @@ env:
   AR_REPO: ${{ vars.AR_REPO }}
   SERVICE: ${{ vars.SERVICE_NAME }}
   COMPILER_REF: ${{ vars.COMPILER_REF || 'cw2' }}
+  RUNTIME_SA: ${{ vars.RUNTIME_SA || 'cloudrun-runtime@leowbattle-personal-website.iam.gserviceaccount.com' }}
   IMAGE: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/${{ vars.AR_REPO }}/backend
 
 jobs:
@@ -48,6 +49,7 @@ jobs:
             --image "$IMAGE" \
             --region "$REGION" \
             --platform managed \
+            --service-account "$RUNTIME_SA" \
             --allow-unauthenticated \
             --memory 512Mi \
             --cpu 1 \
