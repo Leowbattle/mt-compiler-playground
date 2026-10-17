@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>MT Compiler Playground</title>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>MT Compiler Playground</h1>
+        <select id="examples" aria-label="Load example"></select>
+        <button id="run" class="primary">Run</button>
+        <button id="stop">Stop</button>
+        <span id="status" class="status idle">idle</span>
+      </header>
+      <main>
+        <section class="pane">
+          <div class="pane-title">
+            <span>Source (MT)</span>
+            <span id="mode" class="badge">mock</span>
+          </div>
+          <div id="editor" class="pane-body"></div>
+        </section>
+        <section class="pane">
+          <div class="pane-title"><span>TAM</span></div>
+          <pre id="tam" class="pane-body"></pre>
+        </section>
+        <section class="pane">
+          <div class="pane-title"><span>Console</span></div>
+          <div id="console" class="pane-body"></div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
