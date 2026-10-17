@@ -21,7 +21,6 @@ async function init(): Promise<void> {
   ]);
 
   const statusEl = el<HTMLSpanElement>('#status');
-  const modeEl = el<HTMLSpanElement>('#mode');
   const tamEl = el<HTMLPreElement>('#tam');
   const examplesEl = el<HTMLSelectElement>('#examples');
   const runBtn = el<HTMLButtonElement>('#run');
@@ -67,10 +66,7 @@ async function init(): Promise<void> {
     }
   };
 
-  const created = createTransport({ onFrame: handleFrame, onStatus: setStatus });
-  transport = created.transport;
-  modeEl.textContent = created.mode === 'mock' ? 'mock' : 'live';
-  if (created.mode === 'ws') modeEl.classList.add('live');
+  transport = createTransport({ onFrame: handleFrame, onStatus: setStatus });
 
   for (const example of examples) {
     const option = document.createElement('option');
