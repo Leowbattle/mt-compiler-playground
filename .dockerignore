@@ -1,0 +1,12 @@
+.git
+.github
+frontend
+**/node_modules
+**/dist
+backend/.compiler-src
+backend/.compiler-build
+backend/compiler
+PLAN.md
+README.md
+*.log
+.DS_Store
