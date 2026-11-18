@@ -8,6 +8,10 @@ on:
       - 'Dockerfile'
       - '.github/workflows/backend.yml'
   workflow_dispatch:
+    inputs:
+      compiler_ref:
+        description: compilers-labs commit SHA (defaults to the pinned SHA)
+        required: false
 
 permissions:
   contents: read
@@ -17,7 +21,7 @@ env:
   REGION: ${{ vars.GCP_REGION }}
   AR_REPO: ${{ vars.AR_REPO }}
   SERVICE: ${{ vars.SERVICE_NAME }}
-  COMPILER_REF: ${{ vars.COMPILER_REF || 'cw2' }}
+  COMPILER_REF: ${{ inputs.compiler_ref || vars.COMPILER_REF || '154f84746adced00690ca1dc74bba74b48533708' }}
   RUNTIME_SA: ${{ vars.RUNTIME_SA || 'cloudrun-runtime@leowbattle-personal-website.iam.gserviceaccount.com' }}
   IMAGE: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT }}/${{ vars.AR_REPO }}/backend
 
