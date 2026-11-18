@@ -1,7 +1,9 @@
 # MT Compiler Playground
 
 A three-pane web IDE for the "MT" language from
-[compilers-labs](https://github.com/Leowbattle/compilers-labs/tree/cw2) (the `cw2` branch):
+[compilers-labs](https://github.com/Leowbattle/compilers-labs). This `lean` branch
+builds the compiler from the **Lean port**, pinned to a commit (see below);
+`main` uses the original cw2 Haskell compiler:
 
 - **Source** — Monaco editor with MT syntax highlighting and an examples dropdown
 - **TAM** — the generated TAM instructions
@@ -53,14 +55,16 @@ VITE_WS_URL=wss://api.mt-compiler-playground.leowbattle.com/ws npm run build
 
 ## Backend
 
-The backend compiles and runs programs with the cw2 Haskell compiler. The interpreter
-is wrapped in **`rlwrap`**, which provides readline-style line editing and history
-(arrow keys) inside the xterm pane.
+The backend compiles and runs programs with the **Lean port** of the compiler. The
+source commit is pinned in `Dockerfile` and `backend/build-compiler.sh`
+(`COMPILER_REF`); `main` still uses cw2/Haskell. The interpreter is wrapped in
+**`rlwrap`**, which provides readline-style line editing and history (arrow keys)
+inside the xterm pane.
 
 ```bash
 cd backend
 npm install
-bash build-compiler.sh        # clones cw2 from GitHub and builds ./compiler (needs ghc + git)
+bash build-compiler.sh        # clones the pinned commit and runs lake build (needs git + Lean/elan)
 COMPILER_BIN="$PWD/compiler" npm start
 ```
 

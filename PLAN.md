@@ -1,5 +1,8 @@
 # MT Compiler Playground — Build Plan
 
+> This `lean` branch builds the compiler from the Lean port at a pinned commit.
+> The design below describes the original Haskell/cw2 backend on `main`.
+
 A web IDE for the **cw2** "MT" language from `Leowbattle/compilers-labs`.
 
 Three panes: **Monaco editor** (MT source) · **TAM view** (generated instructions) ·
