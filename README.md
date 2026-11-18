@@ -56,10 +56,10 @@ VITE_WS_URL=wss://api.mt-compiler-playground.leowbattle.com/ws npm run build
 ## Backend
 
 The backend compiles and runs programs with the **Lean port** of the compiler. The
-source commit is pinned in `Dockerfile` and `backend/build-compiler.sh`
-(`COMPILER_REF`); `main` still uses cw2/Haskell. The interpreter is wrapped in
-**`rlwrap`**, which provides readline-style line editing and history (arrow keys)
-inside the xterm pane.
+source commit is pinned by `ARG COMPILER_REF` in the `Dockerfile` (the single source
+of truth; `backend/build-compiler.sh` reads it from there); `main` still uses
+cw2/Haskell. The interpreter is wrapped in **`rlwrap`**, which provides readline-style
+line editing and history (arrow keys) inside the xterm pane.
 
 ```bash
 cd backend

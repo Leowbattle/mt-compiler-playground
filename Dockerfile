@@ -6,7 +6,7 @@
 FROM debian:bookworm-slim AS compiler
 
 ARG COMPILER_REPO=https://github.com/Leowbattle/compilers-labs.git
-# Pinned compiler commit (lean branch: Haskell layout + Lean port).
+# The compiler commit is pinned here, and only here.
 ARG COMPILER_REF=154f84746adced00690ca1dc74bba74b48533708
 
 RUN apt-get update \
