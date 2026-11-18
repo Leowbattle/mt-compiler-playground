@@ -368,7 +368,8 @@ Multi-stage:
 **Stage 1 — compiler** (`haskell:9.10`, Debian):
 ```
 ARG COMPILER_REPO=https://github.com/Leowbattle/compilers-labs.git
-ARG COMPILER_REF=cw2          # pin to a commit SHA for reproducible builds
+# The compiler commit is pinned here, and only here.
+ARG COMPILER_REF=<commit-sha>
 
 RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
  && rm -rf /var/lib/apt/lists/*
@@ -481,7 +482,7 @@ Repo settings: **Pages → Source = GitHub Actions**. Set `VITE_WS_URL` as a bui
 
 Trigger: push to `main` touching `backend/**`, `Dockerfile` (+ `workflow_dispatch`).
 The compiler is cloned inside the Docker builder, so there is no `compiler/**` path in
-this repo; a rebuild picks up whatever `COMPILER_REF` points to.
+this repo; a rebuild picks up whatever the Dockerfile's `ARG COMPILER_REF` contains.
 
 ```
 permissions: { contents: read, id-token: write }
@@ -490,12 +491,12 @@ jobs:
     - checkout
     - google-github-actions/auth (Workload Identity Federation preferred)
     - google-github-actions/setup-gcloud
-    - docker build --build-arg COMPILER_REF=${{ vars.COMPILER_REF }} -t IMAGE . && docker push IMAGE
+    - docker build -t IMAGE . && docker push IMAGE
     - gcloud run deploy ...
 ```
 
 Repo variables/secrets needed: `GCP_PROJECT`, `GCP_REGION`, `GCP_WIF_PROVIDER`,
-`GCP_SERVICE_ACCOUNT`, `AR_REPO`, `SERVICE_NAME`, `COMPILER_REF`.
+`GCP_SERVICE_ACCOUNT`, `AR_REPO`, `SERVICE_NAME`.
 
 > **Note:** GitHub Pages cannot host the Node backend. "Deploy the backend" here means
 > **Cloud Run**. If a different target is wanted (Render/Fly/VPS), only this workflow
@@ -549,8 +550,8 @@ returns the right sequence → cw2 type errors are displayed and no run occurs.
 1. **`node-pty` on Cloud Run** — verify `/dev/pts` works (gVisor). Fallback: `script`/`socat`.
 2. **Pages base path** — must match the repo/domain or assets 404.
 3. **Backend deploy target** — assumed **Cloud Run** (Pages is static-only).
-4. **Compiler ref pinning** — the Dockerfile clones upstream and checks out `cw2`; pin
-   `COMPILER_REF` to the `cw2` commit SHA (`494174c…`) for reproducible builds.
+4. **Compiler ref pinning** — the compiler commit is pinned by `ARG COMPILER_REF` in
+   the Dockerfile; `backend/build-compiler.sh` reads it from there.
 5. **Backend URL** — `wss://api.mt-compiler-playground.leowbattle.com/ws` (Cloud Run
    domain mapping with a managed certificate). Set as `VITE_WS_URL` for the Pages build
    and allow `https://www.leowbattle.com` as an `Origin`.

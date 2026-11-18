@@ -5,9 +5,14 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REPO="${COMPILER_REPO:-https://github.com/Leowbattle/compilers-labs.git}"
-# Pinned compiler commit (lean branch: Haskell layout + Lean port).
-REF="${COMPILER_REF:-154f84746adced00690ca1dc74bba74b48533708}"
+# The compiler commit is defined only in the Dockerfile.
+REF="$(sed -n 's/^ARG COMPILER_REF=//p' "$ROOT/Dockerfile" | head -n 1)"
+if [ -z "$REF" ]; then
+  echo "ARG COMPILER_REF not found in Dockerfile" >&2
+  exit 1
+fi
 SRC=".compiler-src"
 
 if [ ! -d "$SRC/.git" ]; then
